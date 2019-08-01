@@ -13,7 +13,7 @@ class Installer extends LibraryInstaller
     public function getInstallPath(PackageInterface $package)
     {
         $packageType = $package->getType();
-        $packageName = $this->toCamelCase($package->getPrettyName());
+        $packageName = $this->getDirectoryName($package);
 
         switch ($packageType) {
             case 'mautic-theme':
@@ -29,7 +29,9 @@ class Installer extends LibraryInstaller
     }
 
     /**
-     * {@inheritDoc}
+     * @param $packageType
+     *
+     * @return bool
      */
     public function supports($packageType)
     {
@@ -41,6 +43,27 @@ class Installer extends LibraryInstaller
         return in_array($packageType, $supportedTypes);
     }
 
+    /**
+     * @param PackageInterface $package
+     *
+     * @return string
+     */
+    private function getDirectoryName(PackageInterface $package)
+    {
+        $extra = $package->getExtra();
+
+        if (!empty($extra['install-directory-name'])) {
+            return $extra['install-directory-name'];
+        }
+
+        return $this->toCamelCase($package->getPrettyName());
+    }
+
+    /**
+     * @param string $packageName
+     *
+     * @return string
+     */
     private function toCamelCase($packageName)
     {
         return str_replace(' ', '', ucwords(str_replace('-', ' ', basename($packageName))));
