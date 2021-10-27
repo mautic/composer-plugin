@@ -19,6 +19,16 @@ class InstallerPlugin implements PluginInterface, EventSubscriberInterface
         $composer->getInstallationManager()->addInstaller($installer);
     }
 
+    public function deactivate(Composer $composer, IOInterface $io)
+    {
+        // Method must exist for composer-plugin-api 2 support
+    }
+
+    public function uninstall(Composer $composer, IOInterface $io)
+    {
+        // Method must exist for composer-plugin-api 2 support
+    }
+
     public static function getSubscribedEvents()
     {
         return [
